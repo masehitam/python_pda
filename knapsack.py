@@ -129,3 +129,32 @@ capacity = int(input("Enter the capacity of the knapsack: "))
 selected_items, total_weight, total_value = knapsack(n, weights, values, capacity)
 
 print(f"Output: ({selected_items}, {total_weight}, {total_value})")
+
+
+def fractional_knapsack(values, weights, capacity):
+    n = len(values)
+    # Membuat daftar rasio nilai per unit bobot
+    items = [(values[i] / weights[i], values[i], weights[i]) for i in range(n)]
+    # Urutkan item berdasarkan rasio dari besar ke kecil
+    items.sort(reverse=True, key=lambda x: x[0])
+
+    total_value = 0
+    for ratio, value, weight in items:
+        if capacity >= weight:
+            # Ambil seluruh item
+            total_value += value
+            capacity -= weight
+        else:
+            # Ambil sebagian dari item
+            total_value += ratio * capacity
+            break
+
+    return total_value
+
+# Contoh penggunaan:
+values = [60, 100, 120]
+weights = [10, 20, 30]
+capacity = 50
+
+max_value = fractional_knapsack(values, weights, capacity)
+print(f"Nilai maksimum dengan greedy: {max_value}")
